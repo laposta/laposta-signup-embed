@@ -64,6 +64,7 @@ var Lse = Lse || {};
     if (self.listsSettingsInput.val()) {
       listsSettings = JSON.parse(self.listsSettingsInput.val());
     }
+    listsSettings = listsSettings || {};
 
     listsSettings[newListSettings.listId] = newListSettings;
 
@@ -77,7 +78,7 @@ var Lse = Lse || {};
     if (self.listsSettingsInput.val()) {
       listsSettings = JSON.parse(self.listsSettingsInput.val());
     }
-    if (listsSettings.hasOwnProperty(listId)) {
+    if (listsSettings && listsSettings.hasOwnProperty(listId)) {
       return listsSettings[listId];
     }
 
