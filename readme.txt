@@ -30,7 +30,7 @@ Plugins screen. Then go to the Settings to setup the connection to Laposta and r
 Please login to your admin dashboard and go to "Settings" -> "Laposta Signup Embed" and click on the button with the text "Reset Cache"
 If this doesn't fix the issue, please check the settings of the embedded form in the laposta.nl environment.
 
-= Ik heb mijn lijst aangepast, maar ik zie de veranderingen niet op mijn website. Wat kan ik doen?  =
+= Mijn lijsten of formulieren worden niet getoond. Wat kan ik doen?  =
 
 Login op uw admin dashboard en ga naar "Instellingen" -> "Laposta Signup Embed" en klik op de knop met de tekst "Reset Cache"
 Als dit het probleem niet oplost, controleer dan de instellingen van het ingebed aanmeldformulier op laposta.nl.
