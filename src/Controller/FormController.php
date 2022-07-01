@@ -78,7 +78,12 @@ class FormController extends BaseController
             ]);
         }
 
-        echo $html;
+        echo wp_kses($html, [
+            'script' => [
+                'async' => [],
+                'src' => [],
+            ]
+        ]);
     }
 
     public function getTemplateDir()

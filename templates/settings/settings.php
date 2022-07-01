@@ -84,10 +84,10 @@ use Laposta\SignupEmbed\Service\DataService;
                                            data-target-selector=".js-show-option-info"
                                            type="radio"
                                            name="show_option"
-                                           id="show_option_<?php echo $key ?>"
-                                           value="<?php echo $key ?>"
+                                           id="show_option_<?php echo esc_html($key) ?>"
+                                           value="<?php echo esc_html($key) ?>"
                                     >
-                                    <label for="show_option_<?php echo $key ?>"><?php echo esc_html($val) ?></label>
+                                    <label for="show_option_<?php echo esc_html($key) ?>"><?php echo esc_html($val) ?></label>
                                 </div>
                             <?php endforeach; ?>
                         </div>
