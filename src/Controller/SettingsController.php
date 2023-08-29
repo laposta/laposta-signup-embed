@@ -8,6 +8,8 @@ use Laposta\SignupEmbed\Plugin;
 class SettingsController extends BaseController
 {
 
+    const NONCE_ACTION_RESET_CACHE = 'lse-reset-cache';
+
     /**
      * @var Container
      */
@@ -40,7 +42,9 @@ class SettingsController extends BaseController
 
         $apiKey = $dataService->getApiKey();
         $lists = $apiKey ? $dataService->getLists() : [];
+        $lists = $lists ?: [];
         $status = $apiKey ? $dataService->getStatus() : null;
+        $resetCacheNonce = wp_create_nonce(self::NONCE_ACTION_RESET_CACHE);
 
         $this->addAssets();
         $this->showTemplate('/settings/settings.php', [
@@ -49,14 +53,17 @@ class SettingsController extends BaseController
             'lists' => $lists,
             'status' => $status,
             'statusMessage' => $dataService->getStatusMessage(),
-            'refreshCacheUrl' => LAPOSTA_SIGNUP_EMBED_AJAX_URL.'&route=settings_reset_cache',
+            'refreshCacheUrl' => LAPOSTA_SIGNUP_EMBED_AJAX_URL.'&route=settings_reset_cache&reset_cache_none='.$resetCacheNonce,
         ]);
     }
 
     public function ajaxResetCache()
     {
         $dataService = $this->c->getDataService();
-        $dataService->emptyAllCache();
+        $nonce = $_GET['reset_cache_none'] ?? null;
+        if (wp_verify_nonce($nonce, self::NONCE_ACTION_RESET_CACHE)) {
+            $dataService->emptyAllCache();
+        }
     }
 
     public function addAssets()
