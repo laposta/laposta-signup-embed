@@ -31,7 +31,11 @@ use Laposta\SignupEmbed\Service\DataService;
                 </tr>
                 <tr>
                     <th scope="row">Zijn niet alle lijsten zichtbaar?</th>
-                    <td><a href="#" class="button button-primary js-reset-cache">Reset Cache</a><span class="lse-settings__reset-cache-result js-reset-result"</td>
+                    <td>
+                        <a href="#" class="button button-primary js-reset-cache">Reset Cache</a>
+                        <span style="display: none;" class="lsb-settings__reset-cache-result js-reset-result-success">De cache is geleegd</span>
+                        <span style="display: none;"  class="lsb-settings__reset-cache-result js-reset-result-error">Er ging iets mis</span>
+                    </td>
                 </tr>
             </table>
         </section>

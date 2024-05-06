@@ -34,6 +34,11 @@ class DataService
      */
     protected $status;
 
+    /**
+     * @var int
+     */
+    protected $cacheDuration = 60 * 60 * 24 * 365;
+
     public function __construct(Container $container)
     {
         $this->c = $container;
@@ -81,7 +86,7 @@ class DataService
     public function setStatus(?string $status)
     {
         $this->status = $status;
-        set_transient(Plugin::TRANSIENT_STATUS, $status, 0);
+        set_transient(Plugin::TRANSIENT_STATUS, $status, $this->cacheDuration);
     }
 
     /**
@@ -147,7 +152,7 @@ class DataService
                 foreach ($items as $item) {
                     $this->lists[] = $item['list'];
                 }
-                set_transient(Plugin::TRANSIENT_LISTS, $this->lists, 0);
+                set_transient(Plugin::TRANSIENT_LISTS, $this->lists, $this->cacheDuration);
                 $this->setStatus(self::STATUS_OK);
 
                 return $this->lists;
@@ -182,5 +187,21 @@ class DataService
     {
         delete_transient(Plugin::TRANSIENT_LISTS);
         delete_transient(Plugin::TRANSIENT_STATUS);
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getCacheDuration()
+    {
+        return $this->cacheDuration;
+    }
+
+    /**
+     * @param float|int $cacheDuration
+     */
+    public function setCacheDuration($cacheDuration): void
+    {
+        $this->cacheDuration = $cacheDuration;
     }
 }
