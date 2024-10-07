@@ -3,6 +3,7 @@
 namespace Laposta\SignupEmbed;
 
 use Laposta\SignupEmbed\Container\Container;
+use Laposta\SignupEmbed\Service\AdminMenu;
 use Laposta\SignupEmbed\Service\RequestHelper;
 
 class Plugin
@@ -17,7 +18,8 @@ class Plugin
     const OPTION_API_KEY = 'laposta-api_key';
     const OPTION_LISTS_SETTINGS = 'laposta_signup_embed_lists_settings';
 
-    const DEFAULT_CAPABILITY = 'manage_options';
+	const DEFAULT_CAPABILITY = 'manage_options';
+	const FILTER_MENU_POSITION = 'laposta_signup_embed_menu_position';
     const FILTER_SETTINGS_PAGE_CAPABILITY = 'laposta_signup_embed_settings_page_capability';
 
     /**
@@ -40,14 +42,20 @@ class Plugin
      */
     protected $pluginBaseName;
 
+	/**
+	 * @var string
+	 */
+	protected $name;
 
-    public function __construct(Container $container)
+
+	public function __construct(Container $container)
     {
         $this->c = $container;
 
         $this->rootDir = realpath(__DIR__.'/..');
         $this->rootUrl = plugin_dir_url($this->rootDir.'/laposta-signup-embed.php');
         $this->pluginBaseName = plugin_basename($this->rootDir.'/laposta-signup-embed.php');
+		$this->name = 'Laposta Signup Embed';
 
         $this->defineConstants();
         $this->init();
@@ -69,7 +77,7 @@ class Plugin
         if (is_admin()) {
             add_action('admin_init', [$this, 'adminInit']);
             add_filter("plugin_action_links_{$this->pluginBaseName}", [$this, 'setPluginActionLinks']);
-            add_action('admin_menu', [$this, 'addMenu']);
+			new AdminMenu($this->c, $this->rootUrl, $this->name, 'Laposta Embed');
         } else {
             add_action('wp_head', [$this->c->getFormController(), 'addToEveryPage'], 99);
             add_shortcode(self::SHORTCODE_RENDER_FORM, [$this->c->getFormController(), 'renderFormByShortcode']);
@@ -88,20 +96,6 @@ class Plugin
         $settingsLink = '<a href="options-general.php?page='.self::SLUG_SETTINGS.'">Settings</a>';
         array_unshift($links, $settingsLink);
         return $links;
-    }
-
-    public function addMenu()
-    {
-        $actualCapability = apply_filters(self::FILTER_SETTINGS_PAGE_CAPABILITY, self::DEFAULT_CAPABILITY);
-        $actualCapability = is_string($actualCapability) ? $actualCapability : self::DEFAULT_CAPABILITY;
-
-        add_options_page(
-            'Laposta Signup Embed',
-            'Laposta Signup Embed',
-            $actualCapability,
-            self::SLUG_SETTINGS,
-            [$this->c->getSettingsController(), 'renderSettings']
-        );
     }
 
     public function addAjaxRoutes()

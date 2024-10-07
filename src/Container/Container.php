@@ -32,6 +32,7 @@ class Container
     public function getPlugin()
     {
         if (!class_exists('Laposta\\SignupEmbed\\Plugin')) {
+			$this->requireAdminMenu();
             require_once realpath(__DIR__.'/..').'/Plugin.php';
             $this->plugin = new Plugin($this);
         }
@@ -57,7 +58,14 @@ class Container
         return $this->dataService;
     }
 
-    protected function requireBaseController()
+	public function requireAdminMenu()
+	{
+		if (!class_exists('Laposta\\SignupEmbed\\Service\\AdminMenu')) {
+			require_once realpath(__DIR__.'/../Service').'/AdminMenu.php';
+		}
+	}
+
+	protected function requireBaseController()
     {
         if (!class_exists('Laposta\\SignupEmbed\\Controller\\BaseController')) {
             require_once realpath(__DIR__.'/../Controller').'/BaseController.php';
