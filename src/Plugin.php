@@ -75,18 +75,21 @@ class Plugin
     public function init()
     {
         if (is_admin()) {
-            add_action('admin_init', [$this, 'adminInit']);
+            add_action('admin_init', [$this, 'onAdminInitAction']);
             add_filter("plugin_action_links_{$this->pluginBaseName}", [$this, 'setPluginActionLinks']);
 			new AdminMenu($this->c, $this->rootUrl, $this->name, 'Laposta Embed');
-        } else {
-            add_action('wp_head', [$this->c->getFormController(), 'addToEveryPage'], 99);
-            add_shortcode(self::SHORTCODE_RENDER_FORM, [$this->c->getFormController(), 'renderFormByShortcode']);
         }
-
+		add_action('init', [$this, 'onInitAction']);
         $this->addAjaxRoutes();
     }
 
-    public function adminInit()
+	public function onInitAction()
+	{
+		add_shortcode(self::SHORTCODE_RENDER_FORM, [$this->c->getFormController(), 'renderFormByShortcode']);
+		add_action('wp_head', [$this->c->getFormController(), 'addToEveryPage'], 99);
+	}
+
+    public function onAdminInitAction()
     {
         register_setting(self::OPTION_GROUP, self::OPTION_API_KEY);
         register_setting(self::OPTION_GROUP, self::OPTION_LISTS_SETTINGS);
