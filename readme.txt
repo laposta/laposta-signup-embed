@@ -2,9 +2,9 @@
 Contributors: roelbousardt, stijnvanderree
 Tags: laposta, nieuwsbrieven, aanmelden, formulier, AVG, newsletters, subscribe, form
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.1
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: BSD 2-Clause License
 
 Laposta is a Dutch email marketing solution.
@@ -38,11 +38,17 @@ Als dit het probleem niet oplost, controleer dan de instellingen van het ingebed
 
 == Upgrade Notice ==
 
-= 1.4.1 =
-* Fixed an issue where the shortcode was not executing correctly in WordPress 6.7.
+= 1.5.0 =
+* Added: Bundled Laposta API PHP wrapper v2.0.1 for compatibility with PHP >= 8.0.
+* Maintained: Laposta API wrapper v1.6 remains included for PHP < 8.0 compatibility.
 
 
 == Changelog ==
+
+= 1.5.0 =
+* Added: Bundled Laposta API PHP wrapper v2.0.1 for compatibility with PHP >= 8.0.
+* Maintained: Laposta API wrapper v1.6 remains included for PHP < 8.0 compatibility.
+
 
 = 1.4.1 =
 * Fixed an issue where the shortcode was not executing correctly in WordPress 6.7.

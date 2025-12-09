@@ -5,6 +5,7 @@ namespace Laposta\SignupEmbed;
 use Laposta\SignupEmbed\Container\Container;
 use Laposta\SignupEmbed\Service\AdminMenu;
 use Laposta\SignupEmbed\Service\RequestHelper;
+use Laposta\SignupEmbed\Service\Logger;
 
 class Plugin
 {
@@ -21,6 +22,7 @@ class Plugin
 	const DEFAULT_CAPABILITY = 'manage_options';
 	const FILTER_MENU_POSITION = 'laposta_signup_embed_menu_position';
     const FILTER_SETTINGS_PAGE_CAPABILITY = 'laposta_signup_embed_settings_page_capability';
+    const FILTER_ENABLE_LOGGING = 'laposta_signup_embed_enable_logging';
 
     /**
      * @var Container
@@ -87,6 +89,8 @@ class Plugin
 	{
 		add_shortcode(self::SHORTCODE_RENDER_FORM, [$this->c->getFormController(), 'renderFormByShortcode']);
 		add_action('wp_head', [$this->c->getFormController(), 'addToEveryPage'], 99);
+		$enableLogger = apply_filters(self::FILTER_ENABLE_LOGGING, defined('WP_DEBUG') && WP_DEBUG);
+		Logger::setIsEnabled($enableLogger);
 	}
 
     public function onAdminInitAction()

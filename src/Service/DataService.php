@@ -4,7 +4,6 @@ namespace Laposta\SignupEmbed\Service;
 
 use Laposta\SignupEmbed\Plugin;
 use Laposta\SignupEmbed\Container\Container;
-use Laposta_List;
 
 class DataService
 {
@@ -54,7 +53,7 @@ class DataService
             $this->c->initLaposta();
         }
 
-        return class_exists('\\Laposta');
+        return $this->c->getLapostaApiProxy()->isAvailable();
     }
 
     public function getApiKey(): ?string
@@ -141,9 +140,8 @@ class DataService
             return null;
         }
 
-        $lapostaList = new Laposta_List();
         try {
-            $result = $lapostaList->all();
+            $result = $this->c->getLapostaApiProxy()->getAllLists();
             if (!$result['data']) {
                 $this->setStatus(self::STATUS_NO_LISTS);
             } else {
