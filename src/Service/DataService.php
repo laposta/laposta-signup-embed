@@ -156,15 +156,22 @@ class DataService
                 return $this->lists;
             }
         } catch (\Throwable $e) {
+            $logContext = [
+                'type' => 'unknown',
+                'parameter' => null,
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ];
             $error = @$e->json_body['error'];
-            if ($error) {
-                if ($error['type'] === 'invalid_request') {
-                    $this->setStatus(self::STATUS_INVALID_API_KEY);
-                }
+            if ($error && $error['type'] === 'invalid_request') {
+                $this->setStatus(self::STATUS_INVALID_API_KEY);
             }
             if (!$this->status) {
                 $this->setStatus('error-api: '.print_r($e, 1));
             }
+            Logger::logError('DataService::getLists, caught Throwable', $logContext);
         }
 
         return null;
@@ -172,7 +179,12 @@ class DataService
 
     public function getListById(string $listId): ?array
     {
-        foreach($this->getLists() as $list) {
+        $lists = $this->getLists();
+        if (!$lists) {
+            return null;
+        }
+
+        foreach($lists as $list) {
             if ($list['list_id'] === $listId) {
                 return $list;
             }

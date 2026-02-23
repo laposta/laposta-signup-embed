@@ -36,10 +36,10 @@ class FormController extends BaseController
             ]);
         }
 
-        if (isset($listFields['error'])) {
-            return $this->getRenderedTemplate('/form/form-error.php', [
-                'errorMessage' => $listFields['error']['message'],
-            ]);
+        $listsSettings = $this->getListSettings();
+        $listSetting = $listsSettings[$listId] ?? null;
+        if ($listSetting && (!isset($listSetting['showOption']) || $listSetting['showOption'] === DataService::SHOW_OPTION_NEVER)) {
+            return '';
         }
 
         $html = $this->getRenderedTemplate('/form/form.php', [
@@ -55,9 +55,8 @@ class FormController extends BaseController
         $dataService = $this->c->getDataService();
 
         $listsSettings = get_option(Plugin::OPTION_LISTS_SETTINGS);
-        try {
-            $listsSettings = json_decode($listsSettings, true);
-        } catch (\Throwable $e) {
+        $listsSettings = $this->decodeListSettings($listsSettings);
+        if (!$listsSettings) {
             return;
         }
 
@@ -89,5 +88,27 @@ class FormController extends BaseController
     public function getTemplateDir()
     {
         return LAPOSTA_SIGNUP_EMBED_TEMPLATE_DIR;
+    }
+
+    protected function getListSettings(): array
+    {
+        $listsSettings = get_option(Plugin::OPTION_LISTS_SETTINGS);
+
+        return $this->decodeListSettings($listsSettings) ?: [];
+    }
+
+    protected function decodeListSettings($listsSettings): ?array
+    {
+        if (!$listsSettings) {
+            return null;
+        }
+
+        try {
+            $decoded = json_decode($listsSettings, true);
+        } catch (\Throwable $e) {
+            return null;
+        }
+
+        return is_array($decoded) ? $decoded : null;
     }
 }
