@@ -33,11 +33,11 @@ spl_autoload_register(function ($class) {
 });
 
 /**
- * Conditionally include the standalone Laposta API autoloader
+ * Conditionally include the Laposta API autoloader
  *
  * This API library is only loaded when PHP 8.0 or higher is in use,
  * to ensure compatibility with its internal structure.
  */
 if (PHP_VERSION_ID >= 80000) {
-    require_once __DIR__ . '/includes/laposta-api-php-2/standalone/autoload.php';
+    require_once __DIR__ . '/includes/laposta-api-php-2/autoload.php';
 }
