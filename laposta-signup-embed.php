@@ -4,9 +4,9 @@
  */
 /*
 Plugin Name: Laposta Signup Embed
-Plugin URI: http://laposta.nl/documentatie/wordpress.524.html
+Plugin URI: https://docs.laposta.nl/article/1058-installatie-en-configuratie-van-laposta-signup-embed-voor-wordpress
 Description: Laposta is programma waarmee je gemakkelijk en snel nieuwsbrieven kunt maken en versturen. Met deze plugin kun je je ingebed aanmeldformulier eenvoudig aan je website toevoegen.
-Version: 1.5.1
+Version: 1.5.2
 Author: Laposta - Roel Bousardt
 Author URI: https://laposta.nl/contact
 License: BSD 2-Clause License
@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 use Laposta\SignupEmbed\Container\Container;
 
-define('LAPOSTA_SIGNUP_EMBED_VERSION', '1.5.1');
+define('LAPOSTA_SIGNUP_EMBED_VERSION', '1.5.2');
 
 if (!function_exists('add_action')) {
     echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
