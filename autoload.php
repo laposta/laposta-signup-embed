@@ -1,10 +1,10 @@
 <?php
 
 /**
- * PSR-4 compatible autoloader for the Laposta API library.
+ * Primary runtime autoloader for the plugin classes plus the bundled Laposta API v2 library.
  *
- * This autoloader maps namespace prefixes to directory structures following
- * the PSR-4 standard (https://www.php-fig.org/psr/psr-4/).
+ * WordPress boots the plugin through laposta-signup-embed.php, which includes this file.
+ * In Composer-managed installs, the root project autoloader may also know this namespace.
  */
 
 spl_autoload_register(function ($class) {
@@ -33,11 +33,38 @@ spl_autoload_register(function ($class) {
 });
 
 /**
- * Conditionally include the Laposta API autoloader
- *
- * This API library is only loaded when PHP 8.0 or higher is in use,
- * to ensure compatibility with its internal structure.
+ * Register the version-scoped Laposta API v2 autoloader.
  */
 if (PHP_VERSION_ID >= 80000) {
-    require_once __DIR__ . '/includes/laposta-api-php-2/autoload.php';
+    spl_autoload_register(function ($class) {
+        $prefixes = [
+            'LapostaApi230\\Vendor\\Psr\\Http\\Client\\' => [
+                __DIR__ . '/includes/laposta-api-php-2/vendor/psr/http-client/src/',
+            ],
+            'LapostaApi230\\Vendor\\Psr\\Http\\Message\\' => [
+                __DIR__ . '/includes/laposta-api-php-2/vendor/psr/http-message/src/',
+                __DIR__ . '/includes/laposta-api-php-2/vendor/psr/http-factory/src/',
+            ],
+            'LapostaApi230\\' => [
+                __DIR__ . '/includes/laposta-api-php-2/src/',
+            ],
+        ];
+
+        foreach ($prefixes as $prefix => $baseDirs) {
+            if (strpos($class, $prefix) !== 0) {
+                continue;
+            }
+
+            $relativeClass = substr($class, strlen($prefix));
+            $relativePath = str_replace('\\', '/', $relativeClass) . '.php';
+
+            foreach ($baseDirs as $baseDir) {
+                $file = $baseDir . $relativePath;
+                if (file_exists($file)) {
+                    require_once $file;
+                    return;
+                }
+            }
+        }
+    });
 }
