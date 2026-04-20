@@ -4,7 +4,7 @@ Tags: laposta, nieuwsbrieven, aanmelden, formulier, AVG, newsletters, subscribe,
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.1
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: BSD 2-Clause License
 
 Laposta is a Dutch email marketing solution.
@@ -38,11 +38,13 @@ Als dit het probleem niet oplost, controleer dan de instellingen van het ingebed
 
 == Upgrade Notice ==
 
-= 1.6.0 =
-* Added: Composer package metadata for Composer-managed installs.
-* Changed: Switched the bundled Laposta API v2 runtime to the version-scoped `LapostaApi230` namespace.
+= 1.6.1 =
+* Fixed: Corrected the Laposta API v2 PHP threshold to PHP 8.1 and newer. PHP 8.0 now correctly continues to use the legacy v1.6 wrapper.
 
 == Changelog ==
+
+= 1.6.1 =
+* Fixed: Corrected the Laposta API v2 PHP threshold to PHP 8.1 and newer. PHP 8.0 now correctly continues to use the legacy v1.6 wrapper.
 
 = 1.6.0 =
 * Added: Composer package metadata for Composer-managed installs.
